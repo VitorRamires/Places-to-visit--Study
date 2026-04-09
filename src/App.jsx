@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback, useEffect } from "react";
+import { useRef, useState, useCallback } from "react";
 
 import Places from "./components/Places.jsx";
 import Modal from "./components/Modal.jsx";
@@ -18,6 +18,7 @@ function App() {
     isFetching,
     error,
     fetchingData: userPlaces,
+    setIsFetchingData: setUserPlaces
   } = useFetch(fetchUserPlaces, []);
 
   function handleStartRemovePlace(place) {
@@ -29,8 +30,8 @@ function App() {
     setModalIsOpen(false);
   }
 
-/* async function handleSelectPlace(selectedPlace) {
-    // await updateUserPlaces([selectedPlace, ...userPlaces]);
+  async function handleSelectPlace(selectedPlace) {
+    await updateUserPlaces([selectedPlace, ...userPlaces]);
 
     setUserPlaces((prevPickedPlaces) => {
       if (!prevPickedPlaces) {
@@ -73,9 +74,9 @@ function App() {
 
       setModalIsOpen(false);
     },
-    [userPlaces],
+    [userPlaces, setUserPlaces],
   );
- */
+
 
   function handleError() {
     setErrorUpdatingPlaces(null);
@@ -96,7 +97,7 @@ function App() {
       <Modal open={modalIsOpen} onClose={handleStopRemovePlace}>
         <DeleteConfirmation
           onCancel={handleStopRemovePlace}
-          //onConfirm={handleRemovePlace}
+          onConfirm={handleRemovePlace}
         />
       </Modal>
 
@@ -122,7 +123,7 @@ function App() {
         )}
 
         <AvailablePlaces 
-          //onSelectPlace={handleSelectPlace} 
+          onSelectPlace={handleSelectPlace} 
         />
       </main>
     </>
